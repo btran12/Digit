@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-/**
- * Created by Bao Tran on 6/26/2015.
- */
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class gameOnActivity extends Activity{
     TextView matchNumberTextView,
             rotatingNumberTextView,
@@ -44,13 +44,40 @@ public class gameOnActivity extends Activity{
         //Continuously change rotateNumberTextView
         rotateNumber();
 
-        //TODO Move this portion into a method
-        //TODO Then remove the button along with its onClick method
+        updateDisplay();
+
+//        RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
+//        gameOnLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//            }
+//        });
+    }
+
+    public void initializeVariables(){
+        score = 0;
+        rotatingNumber = 0;
+        delayGap = 400;
+        incorrect = 0;
+
+        matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
+        rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
+        scoreTextView = (TextView) findViewById(R.id.score);
+    }
+
+    public void updateDisplay(){
         RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+
+                    //Give the user a swift look at what they chose
+                    //Pause the Thread
+                    //Find another method to pause.
+                    //Reinitialize rotateNumber/ timer
+                    //Thread.currentThread().sleep(1000);
 
                     //Get values from the TextViews
                     int stoppedNumber = Integer.valueOf(rotatingNumberTextView.getText().toString());
@@ -71,54 +98,29 @@ public class gameOnActivity extends Activity{
                         setMatchNumber(randomNumber());
                     }
 
-                    //Give the user a swift look at what they chose
-                    //Pause the Thread
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
             }
         });
     }
 
-    public void initializeVariables(){
-        score = 0;
-        rotatingNumber = 0;
-        delayGap = 400;
-        incorrect = 0;
-
-        matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
-        rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
-        scoreTextView = (TextView) findViewById(R.id.score);
-    }
-
-    //Obtained from stackoverflow
     public void rotateNumber(){
-        new Thread(new Runnable(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                while(true){
-                    try {
-                        Thread.sleep(delayGap);
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!isPaused) {
-                                    //Reset Only loop from 0-9
-                                    if (rotatingNumber == 10) {
-                                        rotatingNumber = 0;
-                                    }
-                                    rotatingNumberTextView.setText(rotatingNumber++ + "");
-                                }
-                            }
-                        });
-                    }catch (Exception e){
-                        Log.e("Thread", "Unable to update rotating number text");
-                    }
+                Log.i("Current Number: ", rotatingNumber+"");
+                //Reset, only loop from 0-9
+                if (rotatingNumber > 9) {
+                    rotatingNumber = 0;
                 }
+                rotatingNumberTextView.setText(rotatingNumber + "");
+                increment();
             }
-        }).start();
+            //Replace with delayGap
+        }, 0, 1000);    //Update every second
+    }
+
+    public synchronized void increment(){
+        rotatingNumber++;
     }
 
     /**
@@ -133,8 +135,7 @@ public class gameOnActivity extends Activity{
 
     public int randomNumber(){
         //Random number between 0 and 9
-        int random = (int) Math.floor(Math.random()* 10);
-        return random;
+        return (int) Math.floor(Math.random()* 10);
     }
 
     public void setMatchNumber(int randomNumber){

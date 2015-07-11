@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
         EditText userNameText = (EditText) findViewById(R.id.userName);
         String userName = userNameText.getText().toString();
 
-        Intent startGameIntent = new Intent(this, gameOnActivity.class);
+        Intent startGameIntent = new Intent(this, GameOnActivity.class);
         //Send Extra information: name
         startGameIntent.putExtra("userName", userName);
 

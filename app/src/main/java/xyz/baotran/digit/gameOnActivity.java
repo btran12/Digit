@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class gameOnActivity extends Activity{
+public class GameOnActivity extends Activity {
     TextView matchNumberTextView,
             rotatingNumberTextView,
             scoreTextView;
@@ -17,7 +17,9 @@ public class gameOnActivity extends Activity{
     int score,
             rotatingNumber,
             delayGap, //Initial Delay (ms)
-            incorrect; //# of times the user missed the matched number, deduct score
+            incorrect, //# of times the user missed the matched number, deduct score
+            delayDecreaseBy, //Initial Decrease is 50
+            levelsPassed; //Decrease the delayBy by 10 for every 2 levels
 
     Handler mHandler = new Handler();
     boolean isPaused = false;
@@ -49,13 +51,16 @@ public class gameOnActivity extends Activity{
         score = 0;
         rotatingNumber = 0;
         delayGap = 400;
+        delayDecreaseBy = 50;
         incorrect = 0;
+        levelsPassed = 0;
 
         matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
         rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
         scoreTextView = (TextView) findViewById(R.id.score);
     }
 
+    //TODO Fix repeated clicks dont pause for so long
     public void updateDisplay(){
         RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +77,13 @@ public class gameOnActivity extends Activity{
                 //Get values from the TextViews
                 int stoppedNumber = Integer.valueOf(rotatingNumberTextView.getText().toString());
                 int matchNumber = Integer.valueOf(matchNumberTextView.getText().toString());
-                int currentScore = Integer.valueOf(scoreTextView.getText().toString());
 
                 //Compare; Increase Score if Matches
                 if (stoppedNumber == matchNumber) {
-                    //Decrease Delay
-                    if (delayGap > 100) {
-                        delayGap -= 50;
-                    }
 
-                    //Increase Score
-                    scoreTextView.setText(currentScore + 1340 + "");
+                    decreaseDelay();
+
+                    increaseScore();
 
                     //Set a new Match number
                     setMatchNumber(randomNumber());
@@ -93,6 +94,27 @@ public class gameOnActivity extends Activity{
 
             }
         });
+    }
+
+    //TODO Have a 20 seconds countdown that multiply with 1340, the longer the player takes, the less the multiple, final score when the user gets it correct.
+    //TODO Wrong answer also penalizes some how.
+    public void increaseScore() {
+        int currentScore = Integer.valueOf(scoreTextView.getText().toString());
+
+        scoreTextView.setText(currentScore + 1340 + "");
+    }
+
+    public void decreaseDelay() {
+        if (delayGap > 100) {//Max Level
+            //Increase Speed Per 2 levels
+            if (levelsPassed == 2) {
+                delayDecreaseBy -= 10;
+                levelsPassed = 0;
+            }
+            //Keep track of the 2 levels passed
+            levelsPassed++;
+            delayGap -= delayDecreaseBy;
+        }
     }
 
     public void rotateNumber(){

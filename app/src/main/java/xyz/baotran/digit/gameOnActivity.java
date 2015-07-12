@@ -19,7 +19,10 @@ public class GameOnActivity extends Activity {
             delayGap, //Initial Delay (ms)
             incorrect, //# of times the user missed the matched number, deduct score
             delayDecreaseBy, //Initial Decrease is 50
-            levelsPassed; //Decrease the delayBy by 10 for every 2 levels
+            levelsPassed, //Decrease the delayBy by 10 for every 2 levels
+            bonusTime;
+
+    long timeOfLastClick; //To disallow the user from repeatedly clicking
 
     Handler mHandler = new Handler();
     boolean isPaused = false;
@@ -54,44 +57,49 @@ public class GameOnActivity extends Activity {
         delayDecreaseBy = 50;
         incorrect = 0;
         levelsPassed = 0;
+        bonusTime = 20;
 
         matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
         rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
         scoreTextView = (TextView) findViewById(R.id.score);
     }
 
-    //TODO Fix repeated clicks dont pause for so long
+    //TODO If wrong deduct bonus multiply by 5
     public void updateDisplay(){
         RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                long time = System.currentTimeMillis();
-                //Pause the rotation to give the user a quick look at their chosen number
-                //Go into a loop for 500ms
-                while((System.currentTimeMillis() - time) < 500){
-                    pauseRotation();
+                //Register the click only after every 500ms, Disallow repeated clicks
+                if (System.currentTimeMillis() > (timeOfLastClick + 500)) {
+                    long time = System.currentTimeMillis();
+                    //Pause the rotation to give the user a quick look at their chosen number
+                    //Go into a loop for 500ms
+                    while ((System.currentTimeMillis() - time) < 500) {
+                        pauseRotation();
+                    }
+
+                    //Get values from the TextViews
+                    int stoppedNumber = Integer.valueOf(rotatingNumberTextView.getText().toString());
+                    int matchNumber = Integer.valueOf(matchNumberTextView.getText().toString());
+
+                    //Compare; Increase Score if Matches
+                    if (stoppedNumber == matchNumber) {
+
+                        decreaseDelay();
+
+                        increaseScore();
+
+                        //Set a new Match number
+                        setMatchNumber(randomNumber());
+                    }
+
+                    //Resume
+                    resumeRotation();
+
+                    timeOfLastClick = System.currentTimeMillis();
                 }
-
-                //Get values from the TextViews
-                int stoppedNumber = Integer.valueOf(rotatingNumberTextView.getText().toString());
-                int matchNumber = Integer.valueOf(matchNumberTextView.getText().toString());
-
-                //Compare; Increase Score if Matches
-                if (stoppedNumber == matchNumber) {
-
-                    decreaseDelay();
-
-                    increaseScore();
-
-                    //Set a new Match number
-                    setMatchNumber(randomNumber());
-                }
-
-                //Resume
-                resumeRotation();
-
             }
         });
     }
@@ -107,8 +115,8 @@ public class GameOnActivity extends Activity {
     public void decreaseDelay() {
         if (delayGap > 100) {//Max Level
             //Increase Speed Per 2 levels
-            if (levelsPassed == 2) {
-                delayDecreaseBy -= 10;
+            if (levelsPassed == 4) {
+                delayDecreaseBy -= 25;
                 levelsPassed = 0;
             }
             //Keep track of the 2 levels passed

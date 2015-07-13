@@ -111,7 +111,7 @@ public class GameOnActivity extends Activity {
 
         scoreTextView.setText(currentScore + 1340 + "");
     }
-//Testing github commit
+
     public void decreaseDelay() {
         if (delayGap > 100) {//Max Level
             //Increase Speed Per 2 levels

@@ -26,7 +26,7 @@ public class GameOnActivity extends Activity {
 
     Handler mHandler = new Handler();
     boolean isPaused = false;
-//Nothing Delete later
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

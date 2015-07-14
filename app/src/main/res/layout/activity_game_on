@@ -42,5 +42,27 @@
         android:layout_marginStart="21dp"
         android:textColor="@android:color/holo_orange_light" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="20"
+        android:id="@+id/bonusTime"
+        android:layout_above="@+id/matchNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="40sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="x"
+        android:id="@+id/xLabel"
+        android:textSize="35sp"
+        android:layout_alignBottom="@+id/bonusTime"
+        android:layout_toLeftOf="@+id/bonusTime"
+        android:layout_toStartOf="@+id/bonusTime" />
+
 
 </RelativeLayout>

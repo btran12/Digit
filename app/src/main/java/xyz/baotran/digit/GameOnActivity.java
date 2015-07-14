@@ -12,7 +12,8 @@ import android.widget.TextView;
 public class GameOnActivity extends Activity {
     TextView matchNumberTextView,
             rotatingNumberTextView,
-            scoreTextView;
+            scoreTextView,
+            bonusTextView;
 
     int score,
             rotatingNumber,
@@ -24,7 +25,8 @@ public class GameOnActivity extends Activity {
 
     long timeOfLastClick; //To disallow the user from repeatedly clicking
 
-    Handler mHandler = new Handler();
+    Handler mHandler,
+            mHandler2;
     boolean isPaused = false;
 
     @Override
@@ -46,6 +48,8 @@ public class GameOnActivity extends Activity {
         //Continuously change rotateNumberTextView
         rotateNumber();
 
+        decreaseBonus();
+
         updateDisplay();
 
     }
@@ -62,6 +66,10 @@ public class GameOnActivity extends Activity {
         matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
         rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
         scoreTextView = (TextView) findViewById(R.id.score);
+        bonusTextView = (TextView) findViewById(R.id.bonusTime);
+
+        mHandler = new Handler();
+        mHandler2 = new Handler();
     }
 
     //TODO If wrong deduct bonus multiply by 5
@@ -83,6 +91,7 @@ public class GameOnActivity extends Activity {
                     //Get values from the TextViews
                     int stoppedNumber = Integer.valueOf(rotatingNumberTextView.getText().toString());
                     int matchNumber = Integer.valueOf(matchNumberTextView.getText().toString());
+                    bonusTime = Integer.valueOf(bonusTextView.getText().toString());
 
                     //Compare; Increase Score if Matches
                     if (stoppedNumber == matchNumber) {
@@ -93,6 +102,17 @@ public class GameOnActivity extends Activity {
 
                         //Set a new Match number
                         setMatchNumber(randomNumber());
+
+                        //Reset Bonus
+                        bonusTextView.setText((bonusTime = 20) + "");
+                    } else {
+                        if (bonusTime > 5) {
+                            bonusTime -= 5;
+                            bonusTextView.setText(bonusTime + "");
+                        } else {
+                            bonusTime = 0;
+                            bonusTextView.setText(bonusTime + "");
+                        }
                     }
 
                     //Resume
@@ -109,7 +129,7 @@ public class GameOnActivity extends Activity {
     public void increaseScore() {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
 
-        scoreTextView.setText(currentScore + 1340 + "");
+        scoreTextView.setText(currentScore + (1340 * bonusTime) + "");
     }
 
     public void decreaseDelay() {
@@ -125,6 +145,31 @@ public class GameOnActivity extends Activity {
         }
     }
 
+    public void decreaseBonus() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                        if (!isPaused) {  //To toggle the rotation
+                            mHandler2.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (bonusTime > 0) {
+                                        bonusTextView.setText(bonusTime-- + "");
+                                    }
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        Log.e("Thread", "Unable to update bonusTimeTextView");
+                    }
+                }
+            }
+        }).start();
+    }
+
     public void rotateNumber(){
         new Thread(new Runnable(){
             @Override
@@ -134,15 +179,15 @@ public class GameOnActivity extends Activity {
                         //Determine the rotation's speed
                         Thread.sleep(delayGap);
                         if(!isPaused){  //To toggle the rotation
-                            mHandler.post(new Runnable(){
-                               @Override
-                                public void run(){
-                                   //Reset, only loop from 0-9
-                                   if (rotatingNumber > 9) {
-                                       rotatingNumber = 0;
-                                   }
-                                   rotatingNumberTextView.setText(rotatingNumber++ + "");
-                               }
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Reset, only loop from 0-9
+                                    if (rotatingNumber > 9) {
+                                        rotatingNumber = 0;
+                                    }
+                                    rotatingNumberTextView.setText(rotatingNumber++ + "");
+                                }
                             });
                         }
                     }catch(Exception e){

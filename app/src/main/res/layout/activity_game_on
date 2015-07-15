@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/gameActivityLayout">
+    android:id="@+id/gameActivityLayout"
+    android:background="#8b4646">
 
     <TextView
         android:id="@+id/rotatingNumber"
@@ -12,11 +13,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/user_number_label"
-        android:textSize="250sp"
+        android:textSize="300sp"
         android:layout_column="0"
         android:textIsSelectable="false"
-        android:layout_below="@+id/matchNumber"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#f1ad72" />
 
     <TextView
         android:id="@+id/matchNumber"
@@ -24,9 +26,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/match_number"
-        android:textSize="80sp"
+        android:textSize="100sp"
         android:layout_below="@+id/score"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#d86459" />
 
     <TextView
         android:id="@+id/score"
@@ -38,9 +41,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="21dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginStart="21dp"
-        android:textColor="@android:color/holo_orange_light" />
+        android:textColor="#f1e293" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,7 +54,9 @@
         android:layout_above="@+id/matchNumber"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        android:textColor="#588b73"
+        android:layout_marginRight="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,7 +67,8 @@
         android:textSize="35sp"
         android:layout_alignBottom="@+id/bonusTime"
         android:layout_toLeftOf="@+id/bonusTime"
-        android:layout_toStartOf="@+id/bonusTime" />
+        android:layout_toStartOf="@+id/bonusTime"
+        android:textColor="#588b73" />
 
 
 </RelativeLayout>

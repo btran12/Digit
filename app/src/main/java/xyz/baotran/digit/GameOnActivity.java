@@ -21,7 +21,8 @@ public class GameOnActivity extends Activity {
             incorrect, //# of times the user missed the matched number, deduct score
             delayDecreaseBy, //Initial Decrease is 50
             levelsPassed, //Decrease the delayBy by 10 for every 2 levels
-            bonusTime;
+            bonusTime,
+            level;
 
     long timeOfLastClick; //To disallow the user from repeatedly clicking
 
@@ -62,6 +63,7 @@ public class GameOnActivity extends Activity {
         incorrect = 0;
         levelsPassed = 0;
         bonusTime = 20;
+        level = 1;
 
         matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
         rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
@@ -72,7 +74,6 @@ public class GameOnActivity extends Activity {
         mHandler2 = new Handler();
     }
 
-    //TODO If wrong deduct bonus multiply by 5
     public void updateDisplay(){
         RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +106,18 @@ public class GameOnActivity extends Activity {
 
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
+
+                        //TODO Add end Screen
+                        //TODO 5 wrong choices -> end game
+                        if (level > 10) {
+                            //End
+                            pauseRotation();
+                            //Thread.currentThread().interrupt();
+                        } else {
+                            level++;
+                        }
                     } else {
+                        //Incorrect pick deduct x5
                         if (bonusTime > 5) {
                             bonusTime -= 5;
                             bonusTextView.setText(bonusTime + "");
@@ -124,8 +136,6 @@ public class GameOnActivity extends Activity {
         });
     }
 
-    //TODO Have a 20 seconds countdown that multiply with 1340, the longer the player takes, the less the multiple, final score when the user gets it correct.
-    //TODO Wrong answer also penalizes some how.
     public void increaseScore() {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
 
@@ -152,7 +162,7 @@ public class GameOnActivity extends Activity {
                 while (true) {
                     try {
                         Thread.sleep(1000);
-                        if (!isPaused) {  //To toggle the rotation
+                        if (!isPaused) {
                             mHandler2.post(new Runnable() {
                                 @Override
                                 public void run() {

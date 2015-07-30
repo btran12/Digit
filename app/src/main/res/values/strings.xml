@@ -3,8 +3,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="user_number_label">0</string>
-    <string name="button_label">Start</string>
+    <string name="button_label">Normal</string>
     <string name="stop_button">BAM!</string>
     <string name="match_number">0</string>
     <string name="score">0</string>
+    <string name="game_label">Digit</string>
 </resources>

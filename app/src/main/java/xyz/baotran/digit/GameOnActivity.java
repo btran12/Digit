@@ -1,7 +1,6 @@
 package xyz.baotran.digit;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -40,8 +39,8 @@ public class GameOnActivity extends Activity {
         initializeVariables();
 
         //Get whatever is passed from the previous intent
-        Intent fromMain = getIntent();
-        String userName = fromMain.getExtras().getString("userName");
+//        Intent fromMain = getIntent();
+//        String userName = fromMain.getExtras().getString("userName");
 
         //Assign a random number to match
         setMatchNumber(randomNumber());
@@ -107,12 +106,17 @@ public class GameOnActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        //TODO Add end Screen
+                        //TODO Add end Screen, Start Screen on same Activity
                         //TODO 5 wrong choices -> end game
-                        if (level > 10) {
+                        //TODO Animations
+                        if (level > 5) {
                             //End
                             pauseRotation();
-                            //Thread.currentThread().interrupt();
+                            mHandler = null;
+                            mHandler2 = null;
+                            //Dont deduct 5 any more
+                            bonusTime = 0;
+                            //Or dont let the user click the screen anymore
                         } else {
                             level++;
                         }

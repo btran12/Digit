@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -39,13 +38,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void onStartGame(View view) {
-        EditText userNameText = (EditText) findViewById(R.id.userName);
-        String userName = userNameText.getText().toString();
+        startActivity(new Intent(this, GameOnActivity.class));
+    }
 
-        Intent startGameIntent = new Intent(this, GameOnActivity.class);
-        //Send Extra information: name
-        startGameIntent.putExtra("userName", userName);
-
-        startActivity(startGameIntent);
+    public void openSettingsIntent(View view){
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }

@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:visibility="visible">
 
     <Button
         android:layout_width="wrap_content"
@@ -14,17 +15,31 @@
         android:id="@+id/button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:onClick="onStartGame"/>
+        android:onClick="onStartGame" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/userName"
-        android:layout_marginBottom="86dp"
-        android:layout_above="@+id/button"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textView"
+        android:layout_marginTop="32dp"
+        android:text="@string/game_label"
+        android:textSize="80dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/gearicon"
+        android:visibility="visible"
+        android:maxWidth="50dp"
+        android:maxHeight="50dp"
+        android:onClick="openSettingsIntent"
+        android:contentDescription="gear" />
 
 </RelativeLayout>

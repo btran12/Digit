@@ -25,9 +25,10 @@ public class GameOnActivity extends Activity {
 
     long timeOfLastClick; //To disallow the user from repeatedly clicking
 
-    Handler mHandler,
-            mHandler2;
-    boolean isPaused = false;
+    Handler mHandler,   //Main number thread
+            mHandler2;  //Secondary bonus number thread
+    boolean isPaused;
+    boolean gameEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,13 @@ public class GameOnActivity extends Activity {
     }
 
     public void initializeVariables(){
-        score = 0;
-        rotatingNumber = 0;
+        score = rotatingNumber = incorrect = levelsPassed = 0;
         delayGap = 400;
         delayDecreaseBy = 50;
-        incorrect = 0;
-        levelsPassed = 0;
         bonusTime = 20;
         level = 1;
+
+        isPaused = gameEnd = false;
 
         matchNumberTextView = (TextView) findViewById(R.id.matchNumber);
         rotatingNumberTextView = (TextView) findViewById(R.id.rotatingNumber);
@@ -74,7 +74,7 @@ public class GameOnActivity extends Activity {
     }
 
     public void updateDisplay(){
-        RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
+        final RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +95,8 @@ public class GameOnActivity extends Activity {
 
                     //Compare; Increase Score if Matches
                     if (stoppedNumber == matchNumber) {
+                        //Reset incorrect count
+                        incorrect = 0;
 
                         decreaseDelay();
 
@@ -106,17 +108,21 @@ public class GameOnActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        //TODO Add end Screen, Start Screen on same Activity
+                        //TODO Add end Screen
                         //TODO 5 wrong choices -> end game
                         //TODO Animations
                         if (level > 5) {
                             //End
+                            //Stop rotation of numbers
+                            //TODO Put the following into an endGame() method
                             pauseRotation();
-                            mHandler = null;
-                            mHandler2 = null;
-                            //Dont deduct 5 any more
-                            bonusTime = 0;
-                            //Or dont let the user click the screen anymore
+                            mHandler = null;    //Main num
+                            mHandler2 = null;   //Bonus num
+
+                            bonusTextView.setText("0");  //Can no longer decrease when clicked
+
+                            gameEnd = true;
+                            //TODO Open end screen on top with points and reset
                         } else {
                             level++;
                         }
@@ -128,6 +134,12 @@ public class GameOnActivity extends Activity {
                         } else {
                             bonusTime = 0;
                             bonusTextView.setText(bonusTime + "");
+                        }
+
+                        incorrect++;
+
+                        if (incorrect > 4){
+
                         }
                     }
 

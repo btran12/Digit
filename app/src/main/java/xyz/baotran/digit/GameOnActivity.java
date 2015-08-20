@@ -85,6 +85,9 @@ public class GameOnActivity extends Activity {
                     //Pause the rotation to give the user a quick look at their chosen number
                     //Go into a loop for 500ms
                     while ((System.currentTimeMillis() - time) < 500) {
+                        //This method doesn't actually do anything
+                        //Just stuck in the loop for 500ms
+                        //As delay between each pick
                         pauseRotation();
                     }
 
@@ -95,7 +98,7 @@ public class GameOnActivity extends Activity {
 
                     //Compare; Increase Score if Matches
                     if (stoppedNumber == matchNumber) {
-                        //Reset incorrect count
+
                         incorrect = 0;
 
                         decreaseDelay();
@@ -109,20 +112,12 @@ public class GameOnActivity extends Activity {
                         bonusTextView.setText((bonusTime = 20) + "");
 
                         //TODO Add end Screen
-                        //TODO 5 wrong choices -> end game
+                        //New layout on top.
                         //TODO Animations
                         if (level > 5) {
-                            //End
-                            //Stop rotation of numbers
-                            //TODO Put the following into an endGame() method
-                            pauseRotation();
-                            mHandler = null;    //Main num
-                            mHandler2 = null;   //Bonus num
 
-                            bonusTextView.setText("0");  //Can no longer decrease when clicked
+                            endGame();
 
-                            gameEnd = true;
-                            //TODO Open end screen on top with points and reset
                         } else {
                             level++;
                         }
@@ -138,9 +133,8 @@ public class GameOnActivity extends Activity {
 
                         incorrect++;
 
-                        if (incorrect > 4){
-
-                        }
+                        //End game if the player get 4 incorrect picks
+                        if (incorrect > 4){ endGame(); }
                     }
 
                     //Resume
@@ -152,6 +146,17 @@ public class GameOnActivity extends Activity {
         });
     }
 
+    public void endGame(){
+
+        pauseRotation();
+
+        bonusTextView.setText("0");  //Can no longer decrease when clicked
+
+        gameEnd = true;
+
+        //Call endGameScreen
+        //TODO Open end screen on top with points and reset
+    }
     public void increaseScore() {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
 
@@ -175,7 +180,7 @@ public class GameOnActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (gameEnd == false) {
                     try {
                         Thread.sleep(1000);
                         if (!isPaused) {
@@ -200,7 +205,7 @@ public class GameOnActivity extends Activity {
         new Thread(new Runnable(){
             @Override
             public void run(){
-                while(true){
+                while(gameEnd == false){
                     try{
                         //Determine the rotation's speed
                         Thread.sleep(delayGap);

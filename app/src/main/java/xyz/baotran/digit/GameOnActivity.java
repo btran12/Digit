@@ -79,15 +79,12 @@ public class GameOnActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                //Register the click only after every 500ms, Disallow repeated clicks
-                if (System.currentTimeMillis() > (timeOfLastClick + 500)) {
+                //Register the click only after every 250ms, Disallow repeated clicks
+                if (System.currentTimeMillis() > (timeOfLastClick + 250)) {
                     long time = System.currentTimeMillis();
-                    //Pause the rotation to give the user a quick look at their chosen number
-                    //Go into a loop for 500ms
+
+                    //Go into a loop for 500ms; delay between each pick
                     while ((System.currentTimeMillis() - time) < 500) {
-                        //This method doesn't actually do anything
-                        //Just stuck in the loop for 500ms
-                        //As delay between each pick
                         pauseRotation();
                     }
 
@@ -114,19 +111,17 @@ public class GameOnActivity extends Activity {
                         //TODO Add end Screen
                         //New layout on top.
                         //TODO Animations
-                        if (level > 5) {
-
+                        if (level > 5) {    //TODO Change back to 10 when done with testing
                             endGame();
-
                         } else {
                             level++;
                         }
                     } else {
-                        //Incorrect pick deduct x5
+                        //Incorrect pick, deduct 5 from bonus
                         if (bonusTime > 5) {
                             bonusTime -= 5;
                             bonusTextView.setText(bonusTime + "");
-                        } else {
+                        } else { // < 5
                             bonusTime = 0;
                             bonusTextView.setText(bonusTime + "");
                         }
@@ -156,7 +151,21 @@ public class GameOnActivity extends Activity {
 
         //Call endGameScreen
         //TODO Open end screen on top with points and reset
+        //Switch to a different activity maybe
     }
+
+    public void startEndScreenActivity(){
+
+    }
+
+    public void restartGame(){
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
+        //Alternate method API 11+
+        recreate();
+    }
+
     public void increaseScore() {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
 
@@ -229,6 +238,7 @@ public class GameOnActivity extends Activity {
         }).start();
     }
 
+    //Pause thread, stop rotation
     public void pauseRotation(){ isPaused = true;}
 
     public void resumeRotation(){ isPaused = false;}

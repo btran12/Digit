@@ -1,6 +1,7 @@
 package xyz.baotran.digit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -39,10 +40,6 @@ public class GameOnActivity extends Activity {
 
         initializeVariables();
 
-        //Get whatever is passed from the previous intent
-//        Intent fromMain = getIntent();
-//        String userName = fromMain.getExtras().getString("userName");
-
         //Assign a random number to match
         setMatchNumber(randomNumber());
 
@@ -72,7 +69,7 @@ public class GameOnActivity extends Activity {
         mHandler = new Handler();
         mHandler2 = new Handler();
     }
-
+    //TODO Background music, and tap fx
     public void updateDisplay(){
         final RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +105,6 @@ public class GameOnActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        //TODO Add end Screen
                         //New layout on top.
                         //TODO Animations
                         if (level > 5) {    //TODO Change back to 10 when done with testing
@@ -135,42 +131,34 @@ public class GameOnActivity extends Activity {
                     //Resume
                     resumeRotation();
 
-                    timeOfLastClick = System.currentTimeMillis();
+                    timeOfLastClick = System.currentTimeMillis();   //Register the current time
                 }
             }
         });
     }
 
     public void endGame(){
-
         pauseRotation();
-
         bonusTextView.setText("0");  //Can no longer decrease when clicked
-
         gameEnd = true;
 
-        //Call endGameScreen
-        //TODO Open end screen on top with points and reset
-        //Switch to a different activity maybe
+        //open end screen
+        startEndScreenActivity();
     }
 
     public void startEndScreenActivity(){
+        Intent endIntent = new Intent(this, EndGameActivity.class);
+        endIntent.putExtra("finalScore", score);
 
-    }
-
-    public void restartGame(){
-//        Intent intent = getIntent();
-//        finish();
-//        startActivity(intent);
-        //Alternate method API 11+
-        recreate();
+        finish(); //Kill current activity
+        startActivity(endIntent);
     }
 
     public void increaseScore() {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
-
-        scoreTextView.setText(currentScore + (1340 * bonusTime) + "");
-    }
+        score = currentScore + (1340 * bonusTime);
+        scoreTextView.setText(score + "");
+}
 
     public void decreaseDelay() {
         if (delayGap > 100) {//Max Level

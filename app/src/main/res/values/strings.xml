@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">Digit</string>
+    <string name="app_name">DIGIT</string>
 
     <string name="action_settings">Settings</string>
     <string name="user_number_label">0</string>
-    <string name="button_label">Normal</string>
+    <string name="button_label">Start Game</string>
     <string name="stop_button">BAM!</string>
     <string name="match_number">0</string>
     <string name="score">0</string>
-    <string name="game_label">Digit</string>
+    <string name="game_label">DIGIT</string>
+    <string name="restart_button_label">Restart Game</string>
 </resources>

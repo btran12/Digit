@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5e5e5e">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00000000"
+        android:id="@+id/final_score"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="97dp"
+        android:textSize="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFD700" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/restart_button_label"
+        android:id="@+id/button2"
+        android:height="80dp"
+        android:width="200dp"
+        android:layout_below="@+id/final_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="88dp"
+        android:textSize="20sp"
+        android:onClick="restartGame"
+        android:background="#414141"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>

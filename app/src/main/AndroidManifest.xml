@@ -25,6 +25,11 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".EndGameActivity"
+            android:label="End Screen">
+        </activity>
+
+        <activity
             android:name=".SettingsActivity"
             android:label="Settings">
         </activity>

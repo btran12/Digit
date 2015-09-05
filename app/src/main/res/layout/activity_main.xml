@@ -22,7 +22,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="108dp"
         android:textColor="#ffffff"
-        android:background="#414141" />
+        android:background="#414141"
+        android:focusableInTouchMode="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,8 +33,9 @@
         android:text="@string/game_label"
         android:textSize="120sp"
         android:textColor="#ffffff"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="47dp" />
 
     <ImageView
         android:layout_width="wrap_content"

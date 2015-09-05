@@ -16,13 +16,15 @@ public class GameOnActivity extends Activity {
             bonusTextView;
 
     int score,
-            rotatingNumber,
-            delayGap, //Initial Delay (ms)
-            incorrect, //# of times the user missed the matched number, deduct score
-            delayDecreaseBy, //Initial Decrease is 50
-            levelsPassed, //Decrease the delayBy by 10 for every 2 levels
-            bonusTime,
-            level;
+        rotatingNumber,
+        delayGap, //Initial Delay (ms)
+        incorrect, //# of times the user missed the matched number, deduct score
+        delayDecreaseBy, //Initial Decrease is 50
+        levelsPassed, //Decrease the delayBy by 10 for every 2 levels
+        bonusTime,
+        level,
+        gameDuration,
+        clickCount;
 
     long timeOfLastClick; //To disallow the user from repeatedly clicking
 
@@ -70,6 +72,7 @@ public class GameOnActivity extends Activity {
         mHandler2 = new Handler();
     }
     //TODO Background music, and tap fx
+    //TODO Animations
     public void updateDisplay(){
         final RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
         gameOnLayout.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +108,6 @@ public class GameOnActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        //New layout on top.
-                        //TODO Animations
                         if (level > 5) {    //TODO Change back to 10 when done with testing
                             endGame();
                         } else {
@@ -158,7 +159,7 @@ public class GameOnActivity extends Activity {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
         score = currentScore + (1340 * bonusTime);
         scoreTextView.setText(score + "");
-}
+    }
 
     public void decreaseDelay() {
         if (delayGap > 100) {//Max Level
@@ -233,6 +234,9 @@ public class GameOnActivity extends Activity {
 
     public int randomNumber(){ return (int) Math.floor(Math.random()* 10); }
 
-    public void setMatchNumber(int randomNumber){ matchNumberTextView.setText(randomNumber+""); }
+    public void setMatchNumber(int randomNumber){
+        matchNumberTextView.setText(randomNumber+"");
+        //TODO Add Animation
+    }
 
 }

@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -108,7 +112,8 @@ public class GameOnActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        if (level > 5) {    //TODO Change back to 10 when done with testing
+                        //TODO Change mode when at a certain level
+                        if (level > 10) {    //The number of levels
                             endGame();
                         } else {
                             level++;
@@ -159,6 +164,7 @@ public class GameOnActivity extends Activity {
         int currentScore = Integer.valueOf(scoreTextView.getText().toString());
         score = currentScore + (1340 * bonusTime);
         scoreTextView.setText(score + "");
+        //TODO Animate rotating scores
     }
 
     public void decreaseDelay() {
@@ -236,7 +242,28 @@ public class GameOnActivity extends Activity {
 
     public void setMatchNumber(int randomNumber){
         matchNumberTextView.setText(randomNumber+"");
-        //TODO Add Animation
+
+        fadeOut_fadeIn(matchNumberTextView);
     }
 
+    //Animate the opacity of the text view
+    public void fadeOut_fadeIn(TextView view){
+        int duration = 400;
+        AlphaAnimation fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); // Smooth out the animation
+        fadeOut.setDuration(duration);
+
+
+        AlphaAnimation fadeIn = new AlphaAnimation(0,1);
+        fadeIn.setInterpolator(new DecelerateInterpolator());
+        fadeOut.setStartOffset(duration); //Start After the other animation, not at the same time
+        fadeIn.setDuration(duration);
+
+
+        AnimationSet animation = new AnimationSet(false);
+        animation.addAnimation(fadeOut);
+        animation.addAnimation(fadeIn);
+
+        view.setAnimation(animation);
+    }
 }

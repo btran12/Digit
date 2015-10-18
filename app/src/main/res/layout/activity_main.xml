@@ -18,12 +18,12 @@
         android:height="80dp"
         android:width="200dp"
         android:textSize="25sp"
-        android:layout_above="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="75dp"
         android:textColor="#ffffff"
         android:background="#414141"
-        android:focusableInTouchMode="false" />
+        android:focusableInTouchMode="false"
+        android:layout_above="@+id/imageView"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,9 +33,9 @@
         android:text="@string/game_label"
         android:textSize="120sp"
         android:textColor="#ffffff"
-        android:layout_above="@+id/button"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="47dp" />
+        android:layout_marginTop="30dp" />
 
     <ImageView
         android:layout_width="wrap_content"

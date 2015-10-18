@@ -10,4 +10,5 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
     }
+    //Activity is used for directions.
 }

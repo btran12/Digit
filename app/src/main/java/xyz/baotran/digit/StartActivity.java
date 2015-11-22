@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity{
+public class StartActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void onStartGame(View view) {
-        startActivity(new Intent(this, GameOnActivity.class));
+        startActivity(new Intent(this, GameActivity.class));
     }
-
-    public void openSettingsIntent(View view){startActivity(new Intent(this, SettingsActivity.class)); }
 }

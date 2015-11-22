@@ -17,7 +17,7 @@ public class EndGameActivity extends Activity {
 
         setContentView(R.layout.activity_end_screen);
 
-        //Get Score from GameOnActivity
+        //Get Score from GameActivity
         Intent gameOn = getIntent();
         int score = gameOn.getExtras().getInt("finalScore");
 
@@ -28,6 +28,6 @@ public class EndGameActivity extends Activity {
     // Restart Button Click Listener
     public void restartGame(View view){
         finish(); //Kill this activity; no history
-        startActivity(new Intent(this, GameOnActivity.class));
+        startActivity(new Intent(this, GameActivity.class));
     }
 }

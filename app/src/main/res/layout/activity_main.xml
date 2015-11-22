@@ -33,9 +33,9 @@
         android:text="@string/game_label"
         android:textSize="120sp"
         android:textColor="#ffffff"
+        android:layout_marginTop="65dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/gearicon"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:maxWidth="50dp"
         android:maxHeight="50dp"
         android:onClick="openSettingsIntent"

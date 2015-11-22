@@ -1,9 +1,12 @@
 package xyz.baotran.digit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -13,7 +16,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class GameOnActivity extends Activity {
+public class GameActivity extends Activity {
     TextView matchNumberTextView,
             rotatingNumberTextView,
             scoreTextView,
@@ -36,6 +39,9 @@ public class GameOnActivity extends Activity {
             mHandler2;  //Secondary bonus number thread
     boolean isPaused;
     boolean gameEnd;
+
+    Vibrator vibrator;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,9 @@ public class GameOnActivity extends Activity {
 
         mHandler = new Handler();
         mHandler2 = new Handler();
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.beep);
     }
     //TODO Background music, and tap fx
     //TODO Animations
@@ -99,15 +108,15 @@ public class GameOnActivity extends Activity {
 
                     //Compare; Increase Score if Matches
                     if (stoppedNumber == matchNumber) {
+                        //Play sound fx
+                        mediaPlayer.start();
 
+                        //Reset the count
                         incorrect = 0;
 
                         decreaseDelay();
-
                         increaseScore();
-
-                        //Set a new Match number
-                        setMatchNumber(randomNumber());
+                        setMatchNumber(randomNumber());      //Set a new Match number
 
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
@@ -118,18 +127,23 @@ public class GameOnActivity extends Activity {
                         } else {
                             level++;
                         }
-                    } else {
-                        //Incorrect pick, deduct 5 from bonus
+
+                    } else {    //If wrongly matched number
+
+                        vibrator.vibrate(50);   //Vibrate the user's device
+
+                        // deduct 5 from bonus
                         if (bonusTime > 5) {
                             bonusTime -= 5;
                             bonusTextView.setText(bonusTime + "");
-                        } else { // < 5
+                        } else { // <= 5
                             bonusTime = 0;
                             bonusTextView.setText(bonusTime + "");
                         }
 
-                        incorrect++;
 
+
+                        incorrect++;
                         //End game if the player get 4 incorrect picks
                         if (incorrect > 4){ endGame(); }
                     }

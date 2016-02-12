@@ -1,5 +1,6 @@
 package xyz.baotran.digit;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -83,8 +84,9 @@ public class GameActivity extends Activity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+        mediaPlayer.setVolume(1, 1);
     }
-    //TODO Background music, and tap fx
+
     //TODO Animations
     public void updateDisplay(){
         final RelativeLayout gameOnLayout = (RelativeLayout) findViewById(R.id.gameActivityLayout);
@@ -121,7 +123,6 @@ public class GameActivity extends Activity {
                         //Reset Bonus
                         bonusTextView.setText((bonusTime = 20) + "");
 
-                        //TODO Change mode when at a certain level
                         if (level > 10) {    //The number of levels
                             endGame();
                         } else {
@@ -142,10 +143,11 @@ public class GameActivity extends Activity {
                         }
 
 
-
                         incorrect++;
                         //End game if the player get 4 incorrect picks
-                        if (incorrect > 4){ endGame(); }
+                        if (incorrect > 4) {
+                            endGame();
+                        }
                     }
 
                     //Resume
@@ -174,11 +176,20 @@ public class GameActivity extends Activity {
         startActivity(endIntent);
     }
 
-    public void increaseScore() {
-        int currentScore = Integer.valueOf(scoreTextView.getText().toString());
-        score = currentScore + (1340 * bonusTime);
-        scoreTextView.setText(score + "");
-        //TODO Animate rotating scores
+    public void increaseScore() {   //With animation
+
+        int newScore = Integer.valueOf(scoreTextView.getText().toString()) + (1340 * bonusTime);
+
+        ValueAnimator animator = ValueAnimator.ofInt(score, newScore); //Go from
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentVal = (Integer) animation.getAnimatedValue();
+                scoreTextView.setText("" + currentVal);
+            }
+        });
+        animator.setDuration(500); //Animation duration
+        animator.start();
+        score = newScore;   //Take on the new value
     }
 
     public void decreaseDelay() {
@@ -260,7 +271,7 @@ public class GameActivity extends Activity {
         fadeOut_fadeIn(matchNumberTextView);
     }
 
-    //Animate the opacity of the text view
+    //Animate the opacity of the matching text view
     public void fadeOut_fadeIn(TextView view){
         int duration = 400;
         AlphaAnimation fadeOut = new AlphaAnimation(1,0);
